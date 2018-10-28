@@ -32,5 +32,13 @@ func CapturePreview(cam *Camera) CameraFile {
 	cf := CameraFile{}
 	C.gp_file_new(&cf.file)
 	fmt.Println(C.gp_camera_capture_preview(cam.camera, cf.file, cam.context))
+	getPreviewFile(&cf)
+
 	return cf
+}
+
+func getPreviewFile(file *CameraFile) {
+	var cSize C.ulong
+	var buf *C.char
+	fmt.Println(C.gp_file_get_data_and_size(file.file, &buf, &cSize))
 }
