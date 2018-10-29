@@ -51,6 +51,9 @@ func NewWidget(label string, t WidgetType) Widget {
 		&widget.widget)
 	return widget
 }
+func (w *Widget) CameraWidget() *C.CameraWidget {
+	return w.widget
+}
 func SetName(widget *Widget, name string) {
 	C.gp_widget_set_name(widget.widget, C.CString(name))
 }

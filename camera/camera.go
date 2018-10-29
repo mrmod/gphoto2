@@ -5,12 +5,12 @@ package gphoto2
 // #include <stdlib.h>
 import "C"
 import "fmt"
+import "github.com/mrmod/gphoto2/widget"
 
 //import "unsafe"
 /*
 TODO:
-* gp_camera_capture_preview(camera)
-* gp_file_get_data_and_size(cameraFile
+* gp_camera_set_single_config
 */
 type Camera struct {
 	camera  *C.Camera
@@ -35,6 +35,14 @@ func CapturePreview(cam *Camera) CameraFile {
 	getPreviewFile(&cf)
 
 	return cf
+}
+func SetConfig(cam *Camera, widget *widget.Widget) {
+	C.gp_camera_set_single_config(
+		cam.camera,
+		C.CString(widget.Name),
+		(*C.CameraWidget)(widget.CameraWidget()),
+		cam.context)
+
 }
 
 func getPreviewFile(file *CameraFile) {
