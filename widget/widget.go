@@ -1,10 +1,10 @@
-package gphoto2
+package widget
 
 // #cgo pkg-config: libgphoto2
 // #include <gphoto2.h>
 // #include <stdlib.h>
 import "C"
-import "fmt"
+import "unsafe"
 
 // gp_widget_new
 // gp_widget_set_name
@@ -45,12 +45,15 @@ var widgetType = map[int]C.CameraWidgetType{
 
 func NewWidget(label string, t WidgetType) Widget {
 	widget := Widget{Label: label}
-	C.gp_widget_name(
-		widgetType[t],
+	C.gp_widget_new(
+		widgetType[int(t)],
 		C.CString(widget.Label),
 		&widget.widget)
 	return widget
 }
-func NameWidget(widget *Widget, name string) {
+func SetName(widget *Widget, name string) {
 	C.gp_widget_set_name(widget.widget, C.CString(name))
+}
+func SetStringValue(widget *Widget, value string) {
+	C.gp_widget_set_value(widget.widget, unsafe.Pointer(&value))
 }
